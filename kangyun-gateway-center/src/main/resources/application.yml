@@ -1,0 +1,37 @@
+server:
+  port: 8769
+  servlet:
+    context-path: /api
+
+zuul:
+  routes:
+    user:
+      path: /user/**
+      service-id: kangyun-user-center
+      stripPrefix: false
+      sensitiveHeaders:
+
+    consul:
+      path: /consul/**
+      service-id: kangyun-consul-center
+      stripPrefix: false
+      sensitiveHeaders:
+
+
+spring:
+  cloud:
+    consul:
+      host: 47.96.185.26
+      port: 8500
+      discovery:
+        health-check-path: /api/health
+        prefer-ip-address: true
+
+  application:
+    name: kangyun-gateway-center
+
+##
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 60000

@@ -1,0 +1,71 @@
+version: '3'
+services:
+  # 指定服务名称:网关
+#  kangyun-gateway:
+#    # 指定服务使用的镜像
+#    image: kangyun-gateway-center
+#    # 指定容器名称
+#    container_name: kangyun-gateway-center
+#    # 指定服务运行的端口
+#    ports:
+#      - 8769:8769
+#    # 指定容器中需要挂载的文件
+#    #volumes:
+#     # - /mydata/mysql/log:/var/log/mysql
+#      #- /mydata/mysql/data:/var/lib/mysql
+#      #- /mydata/mysql/conf:/etc/mysql
+#    # 指定容器的环境变量
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=root
+#
+#  ## 指定服务的名称：用户中心
+#  kangyun-user:
+#    image: kangyun-user-center
+#    container_name: kangyun-user-center
+#    ports:
+#      - 9992:9992
+
+  kangyun-consul-center:
+    build: ./dockerfile4
+    image: kangyun-consul-center
+    container_name: kangyun-consul-center
+    ports:
+      - 9999:9999
+
+  kangyun-gateway-center:
+    build: ./dockerfile1
+    image: kangyun-gateway-center
+    container_name: kangyun-gateway-center
+    ports:
+      - 8769:8769
+
+  ## 服务名称
+  node-1:
+    image: shcoder/alpine-consul
+    hostname: node-1
+    ports:
+      - 8500:8500
+    environment:
+      - CONSUL_NODE_NAME=node-1
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_SERVER=true
+      - CONSUL_CLUSTER_IPS=node-2,node-3
+      - CONSUL_ENCRYPT=q7Gsg6LSdrtWFvBpw7vmdA==
+  node-2:
+    image: shcoder/alpine-consul
+    hostname: node-2
+    environment:
+      - CONSUL_NODE_NAME=node-2
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_SERVER=true
+      - CONSUL_CLUSTER_IPS=node-1,node-3
+      - CONSUL_ENCRYPT=q7Gsg6LSdrtWFvBpw7vmdA==
+  node-3:
+    image: shcoder/alpine-consul
+    hostname: node-3
+    environment:
+      - CONSUL_NODE_NAME=node-3
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_SERVER=true
+      - CONSUL_CLUSTER_IPS=node-1,node-2
+      - CONSUL_ENCRYPT=q7Gsg6LSdrtWFvBpw7vmdA==

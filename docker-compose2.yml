@@ -1,0 +1,78 @@
+version: '3'
+services:
+#  kangyun-gateway-center:
+#    build: ./dockerfile1
+#    image: kangyun-gateway-center
+#    container_name: kangyun-gateway-center
+#    ports:
+#      - 8769:8769
+#    links:
+#      - node-1
+
+  kangyun-consul-center:
+    build: ./dockerfile4
+    image: kangyun-consul-center
+    container_name: kangyun-consul-center
+    ports:
+      - 9999:9999
+    links:
+      - node-1
+
+#  kangyun-user-center:
+#    build: ./dockerfile2
+#    image: kangyun-user-center
+#    container_name: kangyun-user-center
+#    ports:
+#      - 9992:9992
+#    links:
+#      - node-1
+  ## 服务名称
+  node-1:
+    image: consul:latest
+    hostname: consul-1
+    environment:
+      - CONSUL_NODE_NAME=node-1
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_SERVER=true
+      - CONSUL_CLUSTER_IPS=node-2,node-3
+      - CONSUL_ENCRYPT=q7Gsg6LSdrtWFvBpw7vmdA==
+    command: agent -server -bootstrap-expect=3 -node=node-1 -bind=0.0.0.0 -client=0.0.0.0 -datacenter=dc1
+  node-2:
+    image: consul:latest
+    hostname: consul-2
+    environment:
+      - CONSUL_NODE_NAME=node-2
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_SERVER=true
+      - CONSUL_CLUSTER_IPS=node-1,node-3
+      - CONSUL_ENCRYPT=q7Gsg6LSdrtWFvBpw7vmdA==
+    command: agent -server -retry-join=node-1 -node=node-2 -bind=0.0.0.0 -client=0.0.0.0 -datacenter=dc1
+    depends_on:
+      - node-1
+  node-3:
+    image: consul:latest
+    hostname: consul-3
+    environment:
+      - CONSUL_NODE_NAME=node-3
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_SERVER=true
+      - CONSUL_CLUSTER_IPS=node-1,node-2
+      - CONSUL_ENCRYPT=q7Gsg6LSdrtWFvBpw7vmdA==
+    command: agent -server -retry-join=node-1 -node=node-3 -bind=0.0.0.0 -client=0.0.0.0 -datacenter=dc1
+    depends_on:
+      - node-1
+  node-4:
+    image: consul:latest
+    hostname: consul-4
+    environment:
+      - CONSUL_NODE_NAME=node-4
+      - CONSUL_BOOTSTRAP_EXPECT=3
+      - CONSUL_CLIENT=true
+      - CONSUL_CLUSTER_IPS=node-1,node-2
+      - CONSUL_ENCRYPT=q7Gsg6LSdrtWFvBpw7vmdA==
+    command: agent -retry-join=node-1 -node=node-4 -bind=0.0.0.0 -client=0.0.0.0 -datacenter=dc1 -ui
+    depends_on:
+      - node-2
+      - node-3
+    ports:
+      - 8500:8500
