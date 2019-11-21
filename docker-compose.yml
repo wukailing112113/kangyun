@@ -13,6 +13,7 @@ services:
 #    networks:
 #      - byfn
 
+## 注册节点
   consul1:
     image: consul:latest
     container_name: node1
