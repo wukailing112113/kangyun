@@ -4,14 +4,14 @@ networks:
 
 services:
 
-#  kangyun-user-center:
-#    build: ./dockerfile2
-#    image: kangyun-user-center
-#    container_name: kangyun-user-center
-#    ports:
-#      - 9992:9992
-#    networks:
-#      - byfn
+  kangyun-user-center:
+    build: ./user
+    image: kangyun-user-center
+    container_name: kangyun-user-center
+    ports:
+      - 9992:9992
+    networks:
+      - byfn
 
 ## 注册节点
   consul1:
