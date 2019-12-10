@@ -2,7 +2,7 @@
 spring:
   cloud:
     consul:
-      host: consul4
+      host: node4
       port: 8500
       discovery:
         health-check-path: /user/health

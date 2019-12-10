@@ -5,7 +5,7 @@ networks:
 services:
 
   kangyun-user-center:
-    build: ./user
+    build: ./user/kangyun/kangyun-user-center
     image: kangyun-user-center
     container_name: kangyun-user-center
     ports:
