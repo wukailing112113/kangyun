@@ -6,7 +6,6 @@ services:
 
   kangyun-user-center:
     build: ./user/kangyun/kangyun-user-center
-    image: kangyun-user-center
     container_name: kangyun-user-center
     ports:
       - 9992:9992
