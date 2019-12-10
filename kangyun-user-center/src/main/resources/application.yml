@@ -1,16 +1,5 @@
 
 spring:
-  cloud:
-    consul:
-      host: 203.195.177.17
-      port: 8500
-      discovery:
-        health-check-path: /user/health
-        prefer-ip-address: true
-      config:
-        enabled: true
-        format: yaml # 表示consul上面文件的格式 有四种 YAML PROPERTIES KEY-VALUE FILES
-        data-key: data  #表示consul上面的KEY值(或者说文件的名字) 默认是data
   application:
     name: kangyun-user-center
 
