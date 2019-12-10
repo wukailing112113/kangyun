@@ -6,6 +6,7 @@ spring:
       discovery:
         health-check-path: /user/health
         prefer-ip-address: true
+        register: true
       config:
         enabled: true
         format: yaml # 表示consul上面文件的格式 有四种 YAML PROPERTIES KEY-VALUE FILES
